@@ -21,6 +21,11 @@ class KelasController extends Controller
     /**
     * @return \Illuminate\Support\Collection
     */
+    public function delete($id) {
+        Kelas::find($id)->delete();
+
+        return redirect()->back();
+    }
 
     /**
     * @return \Illuminate\Support\Collection
