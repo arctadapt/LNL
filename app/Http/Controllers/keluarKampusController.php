@@ -18,6 +18,7 @@ class keluarKampusController extends Controller
         $perpindahanKelas = PerpindahanKelas::all();
         $kelas = Kelas::all();
         $siswas = Siswa::all();
+
         return view('home', compact('izins', 'siswas', 'perpindahanKelas', 'kelas'));
     }
 

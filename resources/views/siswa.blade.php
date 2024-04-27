@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-content-evenly" id="default-styled-tab"
             data-tabs-toggle="#default-styled-tab-content"
             data-tabs-active-classes="text-purple-600 hover:text-purple-600 dark:text-purple-500 dark:hover:text-purple-500 border-purple-600 dark:border-purple-500"
             data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300"
@@ -19,27 +19,26 @@
         </ul>
     </div>
     <div id="default-styled-tab-content">
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-profile" role="tabpanel"
+        <div class="hidden p-4 bg-white rounded-lg shadow-md" id="styled-profile" role="tabpanel"
             aria-labelledby="profile-tab">
             <div class="container">
-                <div class="card bg-blue-500 mt-3">
+                <div class="mt-3 card">
                     <div class="card-header">
                         Import data Siswa
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="file" name="file" class="form-control mb-2">
-                                    <button class="btn btn-success">Import Siswa</button>
-                                </form>
-                            </div>
+                            <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" name="file" class="form-control">
+
+                                <button class="btn btn-success">Import Siswa</button>
+                            </form>
                             {{-- <div class="col-md-6">
                                 <a href="{{ route('kelas.index') }}" class="btn btn-warning">Import Kelas</a>
                             </div> --}}
                         </div>
-                        <table class="table table-bordered mt-3">
+                        <table class="table mt-3 table-bordered">
                             <tr>
                                 <th>NIS</th>
                                 <th>Nama</th>
@@ -67,10 +66,10 @@
                 </div>
             </div>
         </div>
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="styled-dashboard" role="tabpanel"
+        <div class="hidden p-4 bg-white rounded-lg shadow-md" id="styled-dashboard" role="tabpanel"
             aria-labelledby="dashboard-tab">
             <div class="container">
-                <div class="card bg-light mt-3">
+                <div class="mt-3 card bg-light">
                     <div class="card-header">
                         Import data kelas
                     </div>
@@ -80,7 +79,7 @@
                             <div class="col-md-6">
                                 <form action="{{ route('kelas.import') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="file" name="file" class="form-control mb-2">
+                                    <input type="file" name="file" class="mb-2 form-control">
                                     <button class="btn btn-success">Import Kelas</button>
                                 </form>
                             </div>
@@ -89,7 +88,7 @@
                             </div> --}}
                         </div>
 
-                        <table class="table table-bordered mt-3">
+                        <table class="table mt-3 table-bordered">
                             <tr>
                                 <th>Kelas</th>
                                 <th>Action</th>

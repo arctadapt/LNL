@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="container">
-        <div class="card bg-light mt-3">
+        <div class="mt-3 card bg-light">
             <div class="card-header">
                 Import data kelas
             </div>
@@ -10,7 +10,7 @@
                     <div class="col-md-6">
                         <form action="{{ route('kelas.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" name="file" class="form-control mb-2">
+                            <input type="file" name="file" class="mb-2 form-control">
                             <button class="btn btn-success">Import Kelas</button>
                         </form>
                     </div>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <table class="table table-bordered mt-3">
+                <table class="table mt-3 table-bordered">
                     <tr>
                         <th>Kelas</th>
                         <th>Action</th>

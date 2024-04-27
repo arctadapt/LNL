@@ -5,12 +5,8 @@ use App\Http\Controllers\IzinController;
 use App\Http\Controllers\keluarKampusController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PerpindahanKelasController;
+use App\Http\Controllers\SuratTelatController;
 use Illuminate\Support\Facades\Route;
-
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::controller(SiswaController::class)->group(function(){
     Route::get('siswa', 'index')->name('siswa.index');
@@ -22,6 +18,10 @@ Route::controller(KelasController::class)->group(function(){
     Route::post('kelas-import', 'import')->name('kelas.import');
     Route::delete('kelas/delete/{id}', 'delete')->name('kelas.delete');
 });
+
+Route::get('terlambat', [SuratTelatController::class, 'index'])->name('terlambat.index');
+Route::post('terlambat/store', [SuratTelatController::class, 'store'])->name('terlambat.store');
+
 Route::redirect('/','keluar-kampus');
 Route::resource('keluar-kampus', keluarKampusController::class);
 Route::post('keluar-kampus/storeIzinkeluar', [KeluarKampusController::class, 'storeIzinkeluar'])->name('keluar-kampus.storeIzinkeluar');

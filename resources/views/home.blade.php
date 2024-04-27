@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@include('layouts.navigation')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Izin</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<x-app-layout>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-dT4h8a29xJzvmkMqbH7K5SrbJEYTw70gLF70Yg3dsV7CXFJbxCFPcK5Xs3Y6f8Dk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha384-dT4h8a29xJzvmkMqbH7K5SrbJEYTw70gLF70Yg3dsV7CXFJbxCFPcK5Xs3Y6f8Dk" crossorigin="anonymous">
     <style>
-          body {
+        .body {
             background-color: #fff;
             display: flex;
             justify-content: center;
@@ -17,6 +14,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .container {
             background-color: #ffffff;
             border-radius: 10px;
@@ -80,21 +78,98 @@
             transform: scale(1.1);
         }
     </style>
-</head>
 
-<body>
+    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-content-evenly " id="default-tab"
+            data-tabs-toggle="#default-tab-content" role="tablist">
+            <li class="me-2" role="presentation">
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile"
+                    type="button" role="tab" aria-controls="profile" aria-selected="false">Izin Keluar</button>
+            </li>
+            <li class="me-2" role="presentation">
+                <button
+                    class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
+                    aria-controls="dashboard" aria-selected="false">Pindah Kelas</button>
+            </li>
+        </ul>
+    </div>
+    <div id="default-tab-content">
+        <div class="hidden p-4 bg-white rounded-lg" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <form action="{{ route('keluar-kampus.storeIzinkeluar') }}" method="POST" id="createFormIzinkeluar">
+                @csrf
 
-  <div class="btn-container">
-        <button class="btn btn-custom" data-toggle="modal" data-target="#createModalIzinkeluar">
-            <i class="fas fa-user-plus mr-2"></i> Izin Keluar
+                <div class="form-group">
+                    <label for="siswa_id">Nama Siswa</label>
+                    <select name="siswa_id[]" id="siswa_id" class="w-full" multiple required>
+                        @foreach ($siswas as $siswa)
+                            <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="alasan">Alasan</label>
+                    <input type="text" name="alasan" class="form-control" id="alasan" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mapel">Mapel</label>
+                    <input type="text" name="mapel" class="form-control" id="mapel" required>
+                </div>
+
+                <div>
+                    <button type="reset" class="text-white btn btn-warning">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="hidden p-4 bg-white rounded-lg " id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+            <form action="{{ route('keluar-kampus.storePindahkelas') }}" method="POST" id="createFormPerpindahankelas">
+                @csrf
+                <div class="">
+                    <label for="kelas_id">Kelas</label>
+                    <select name="kelas_id" id="kelas_id" class="w-full" required>
+                        @foreach ($kelas as $kls)
+                            <option value="{{ $kls->id }}">{{ $kls->kelas . ' - ' . $kls->jurusan }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah_siswa">Jumlah Siswa</label>
+                    <input type="number" name="jumlah_siswa" class="form-control" id="jumlah_siswa" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mapel">Mata Pelajaran</label>
+                    <input type="text" name="mapel" class="form-control" id="mapel" required>
+                </div>
+
+                <div class="">
+                    <button type="reset" class="text-white btn btn-warning">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{--
+    <div class="btn-container">
+        <button class="px-5 py-2 text-white bg-blue-500 rounded-sm" data-toggle="modal"
+            data-target="#createModalIzinkeluar">
+            <i class="mr-2 fas fa-user-plus"></i> Izin Keluar
         </button>
-        <button class="btn btn-custom" data-toggle="modal" data-target="#createModalPerpindahankelas">
-            <i class="fas fa-exchange-alt mr-2"></i> Perpindahan Kelas
+        <button class="px-5 py-2 text-white bg-blue-500 rounded-sm" data-toggle="modal"
+            data-target="#createModalPerpindahankelas">
+            <i class="mr-2 fas fa-exchange-alt"></i> Perpindahan Kelas
         </button>
     </div>
 
     <!-- Create Modal Izin Perorang -->
-    <div class="modal fade" id="createModalIzinkeluar" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createModalIzinkeluar" tabindex="-1" role="dialog"
+        aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,39 +179,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('keluar-kampus.storeIzinkeluar') }}" method="POST" id="createFormIzinkeluar">
-                        @csrf
 
-                        <div class="form-group">
-                            <label for="siswa_id">Nama Siswa</label>
-                            <select name="siswa_id[]" id="siswa_id" class="form-control" multiple required>
-                                @foreach($siswas as $siswa)
-                                <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="alasan">Alasan</label>
-                            <input type="text" name="alasan" class="form-control" id="alasan" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mapel">Mapel</label>
-                            <input type="text" name="mapel" class="form-control" id="mapel" required>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade" id="createModalPerpindahankelas" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createModalPerpindahankelas" tabindex="-1" role="dialog"
+        aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -146,37 +197,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('keluar-kampus.storePindahkelas') }}" method="POST" id="createFormPerpindahankelas">
-                        @csrf
-                        <div class="form-group">
-                            <label for="kelas_id">Kelas</label>
-                            <select name="kelas_id" id="kelas_id" class="form-control" required>
-                                @foreach($kelas as $kls)
-                                <option value="{{ $kls->id }}">{{ $kls->kelas }} - {{ $kls->jurusan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
-
-
-                        <div class="form-group">
-                            <label for="jumlah_siswa">Jumlah Siswa</label>
-                            <input type="number" name="jumlah_siswa" class="form-control" id="jumlah_siswa" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="mapel">Mata Pelajaran</label>
-                            <input type="text" name="mapel" class="form-control" id="mapel" required>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -254,6 +279,4 @@
 
 
 
-</body>
-
-</html>
+</x-app-layout>
