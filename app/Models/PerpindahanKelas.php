@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class siswa extends Model
+class PerpindahanKelas extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'nis',
-        'nama',
-        'kelas',
-        'jurusan',
-    ];
-    public function izins()
-    {
-        return $this->belongsToMany(Izin::class);
-    }
 
+    protected $fillable = [
+        'kelas_id',
+        'jumlah_siswa',
+        'mapel',
+    ];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 }
+
