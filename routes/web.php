@@ -26,4 +26,5 @@ Route::redirect('/','keluar-kampus');
 Route::resource('keluar-kampus', keluarKampusController::class);
 Route::post('keluar-kampus/storeIzinkeluar', [KeluarKampusController::class, 'storeIzinkeluar'])->name('keluar-kampus.storeIzinkeluar');
 Route::post('keluar-kampus/storePindahkelas', [KeluarKampusController::class, 'storePindahkelas'])->name('keluar-kampus.storePindahkelas');
+Route::post('keluar-kampus/storeSuratTamu', [KeluarKampusController::class, 'storeSuratTamu'])->name('keluar-kampus.storeSuratTamu');
 

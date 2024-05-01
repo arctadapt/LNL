@@ -92,6 +92,12 @@
                     id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab"
                     aria-controls="dashboard" aria-selected="false">Pindah Kelas</button>
             </li>
+            <li class="me-2" role="presentation">
+                <button
+                    class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="dashboard-tab" data-tabs-target="#tamu" type="button" role="tab"
+                    aria-controls="dashboard" aria-selected="false">Surat Tamu</button>
+            </li>
         </ul>
     </div>
     <div id="default-tab-content">
@@ -145,6 +151,31 @@
                 <div class="form-group">
                     <label for="mapel">Mata Pelajaran</label>
                     <input type="text" name="mapel" class="form-control" id="mapel" required>
+                </div>
+
+                <div class="">
+                    <button type="reset" class="text-white btn btn-warning">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        <div class="hidden p-4 bg-white rounded-lg " id="tamu" role="tabpanel" aria-labelledby="dashboard-tab">
+            <form action="{{ route('keluar-kampus.storeSuratTamu') }}" method="POST" id="createFormSuratTamu">
+                @csrf
+                <div class="">
+                    <label for="nama">Nama</label>
+                    <input type="text" name="nama" class="form-control" id="nama" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="darimana">Darimana</label>
+                    <input type="text" name="darimana" class="form-control" id="darimana" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="kemana">Kemana</label>
+                    <input type="text" name="kemana" class="form-control" id="kemana" required>
                 </div>
 
                 <div class="">
@@ -233,6 +264,13 @@
     </script>
     <script>
         $(document).ready(function() {
+            $('#createFormSuratTamu').on('submit', function() {
+                $('#createFormSuratTamu').modal('hide');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
             $('#createFormIzinkeluar').on('submit', function() {
                 $('#createModalIzinkeluar').modal('hide');
             });
@@ -270,6 +308,25 @@
                 $('#createFormPerpindahankelas')[0].reset(); // Mengosongkan formulir
                 $('#kelas_id').val(null).trigger('change'); // Mereset select dropdown kelas
 
+            });
+        });
+    </script>
+       <script>
+        $(document).ready(function() {
+            $('#createFormSuratTamu').on('submit', function() {
+                $('#createModalSuratTamu').modal('hide');
+            });
+
+            // Membersihkan formulir setiap kali modal disembunyikan
+            $('#createModalSuratTamu').on('hidden.bs.modal', function() {
+                $('#createFormSuratTamu')[0].reset(); // Mengosongkan formulir
+                $('#siswa_id').val(null).trigger('change'); // Mereset select dropdown nama siswa
+            });
+
+            // Inisialisasi plugin select2 untuk select dropdown nama siswa
+            $('#siswa_id').select2({
+                placeholder: 'Pilih Nama Siswa',
+                allowClear: true
             });
         });
     </script>

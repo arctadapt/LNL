@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Izin;
 use App\Models\Siswa;
+use App\Models\Tamu;
 use App\Models\PerpindahanKelas;
 use App\Models\Kelas;
 use Illuminate\Support\Facades\Response;
@@ -79,4 +80,31 @@ class keluarKampusController extends Controller
             return response()->download($directory . '/' . $filename)->deleteFileAfterSend(true);
         }
     }
+
+
+    public function storeSuratTamu(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'darimana' => 'required',
+            'kemana' => 'required',
+        ]);
+
+        // Create PerpindahanKelas record
+        $tamu = Tamu::create($validatedData);
+
+        // Generate PDF content with eager loading for perpindahan_kelas (if needed)
+        $pdf = PDF::loadView('pdf.surat_tamu', compact('tamu'));
+
+        // Set PDF download headers
+        $filename = 'surat_tamu' . $tamu->id . '.pdf';
+        $response = Response::make($pdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+
+        // Download PDF
+        return $response;
+    }
+
 }
