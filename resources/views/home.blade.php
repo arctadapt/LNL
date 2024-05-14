@@ -1,85 +1,21 @@
-@include('layouts.navigation')
+<!DOCTYPE html>
+<html lang="en">
 
-<x-app-layout>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HOME</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/app.js'])
+    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha384-dT4h8a29xJzvmkMqbH7K5SrbJEYTw70gLF70Yg3dsV7CXFJbxCFPcK5Xs3Y6f8Dk" crossorigin="anonymous">
-    <style>
-        .body {
-            background-color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+        integrity="sha384-dT4h8a29xJzvmkMqbH7K5SrbJEYTw70gLF70Yg3dsV7CXFJbxCFPcK5Xs3Y6f8Dk" crossorigin="anonymous"> --}}
+</head>
 
-        .container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-        }
+<body>
 
-        .btn-primary,
-        .btn-outline-primary {
-            background-color: #6c5ce7;
-            border-color: #6c5ce7;
-        }
-
-        .btn-primary:hover,
-        .btn-outline-primary:hover {
-            background-color: #4a3db4;
-            border-color: #4a3db4;
-        }
-
-        .modal-content {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-header {
-            border-bottom: none;
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .form-control {
-            border-color: #6c5ce7;
-        }
-
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #6c5ce7;
-        }
-
-        .btn-container {
-            text-align: center;
-        }
-
-        .btn-custom {
-            background-color: #6c5ce7;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            padding: 15px 30px;
-            font-size: 18px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-custom:hover {
-            background-color: #4a3db4;
-            transform: scale(1.1);
-        }
-    </style>
-
-    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+    {{-- <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center justify-content-evenly " id="default-tab"
             data-tabs-toggle="#default-tab-content" role="tablist">
             <li class="me-2" role="presentation">
@@ -95,11 +31,11 @@
             <li class="me-2" role="presentation">
                 <button
                     class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="dashboard-tab" data-tabs-target="#tamu" type="button" role="tab"
-                    aria-controls="dashboard" aria-selected="false">Surat Tamu</button>
+                    id="dashboard-tab" data-tabs-target="#tamu" type="button" role="tab" aria-controls="dashboard"
+                    aria-selected="false">Surat Tamu</button>
             </li>
         </ul>
-    </div>
+    </div> --}}
     <div id="default-tab-content">
         <div class="hidden p-4 bg-white rounded-lg" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <form action="{{ route('keluar-kampus.storeIzinkeluar') }}" method="POST" id="createFormIzinkeluar">
@@ -160,30 +96,30 @@
             </form>
         </div>
     </div>
-        <div class="hidden p-4 bg-white rounded-lg " id="tamu" role="tabpanel" aria-labelledby="dashboard-tab">
-            <form action="{{ route('keluar-kampus.storeSuratTamu') }}" method="POST" id="createFormSuratTamu">
-                @csrf
-                <div class="">
-                    <label for="nama">Nama</label>
-                    <input type="text" name="nama" class="form-control" id="nama" required>
-                </div>
+    <div class="hidden p-4 bg-white rounded-lg " id="tamu" role="tabpanel" aria-labelledby="dashboard-tab">
+        <form action="{{ route('keluar-kampus.storeSuratTamu') }}" method="POST" id="createFormSuratTamu">
+            @csrf
+            <div class="">
+                <label for="nama">Nama</label>
+                <input type="text" name="nama" class="form-control" id="nama" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="darimana">Darimana</label>
-                    <input type="text" name="darimana" class="form-control" id="darimana" required>
-                </div>
+            <div class="form-group">
+                <label for="darimana">Darimana</label>
+                <input type="text" name="darimana" class="form-control" id="darimana" required>
+            </div>
 
-                <div class="form-group">
-                    <label for="kemana">Kemana</label>
-                    <input type="text" name="kemana" class="form-control" id="kemana" required>
-                </div>
+            <div class="form-group">
+                <label for="kemana">Kemana</label>
+                <input type="text" name="kemana" class="form-control" id="kemana" required>
+            </div>
 
-                <div class="">
-                    <button type="reset" class="text-white btn btn-warning">Reset</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
+            <div class="">
+                <button type="reset" class="text-white btn btn-warning">Reset</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
     </div>
 
     {{--
@@ -311,7 +247,7 @@
             });
         });
     </script>
-       <script>
+    <script>
         $(document).ready(function() {
             $('#createFormSuratTamu').on('submit', function() {
                 $('#createModalSuratTamu').modal('hide');
@@ -333,7 +269,6 @@
     <script>
         // Tambahkan skrip animasi di sini
     </script>
+</body>
 
-
-
-</x-app-layout>
+</html>

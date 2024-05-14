@@ -1,29 +1,22 @@
 <x-app-layout>
-    <div class="container">
-        <div class="mt-3 card bg-light">
-            <div class="card-header">
-                Import data kelas
-            </div>
-            <div class="card-body">
+    <div class="space-y-3">
+        <div class="mt-5">
+            <form action="{{ route('kelas.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" class="bg-white">
+                <button class="px-4 py-2 text-white bg-green-400">Import Kelas</button>
+            </form>
+        </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <form action="{{ route('kelas.import') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="file" name="file" class="mb-2 form-control">
-                            <button class="btn btn-success">Import Kelas</button>
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="{{ route('siswa.index') }}" class="btn btn-warning">Import Siswa</a>
-                    </div>
-                </div>
-
-                <table class="table mt-3 table-bordered">
-                    <tr>
-                        <th>Kelas</th>
-                        <th>Action</th>
+        <div class="p-5 bg-white">
+            <table class="w-full">
+                <thead>
+                    <tr class="text-2xl font-bold border-b border-black">
+                        <td>Kelas</td>
+                        <td>Action</td>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach ($kelas as $data)
                         <tr>
                             <td>{{ $data->kelas . ' ' . $data->jurusan }}</td>
@@ -31,13 +24,13 @@
                                 <form action="{{ route('kelas.delete', $data->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger">Hapus</button>
+                                    <button class="text-red-500">Hapus</button>
                                 </form>
                             </td>
                         </tr>
                     @endforeach
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </x-app-layout>
