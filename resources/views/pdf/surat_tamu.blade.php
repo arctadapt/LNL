@@ -118,6 +118,10 @@
         <div class="content">
             <h3>Keterangan Surat Tamu</h3>
             <div class="form-group">
+                <label for="nama">sebagai:</label>
+                <span>{{ $tamu->identitas }}</span>
+            </div>
+            <div class="form-group">
                 <label for="nama">Nama:</label>
                 <span>{{ $tamu->nama }}</span>
             </div>

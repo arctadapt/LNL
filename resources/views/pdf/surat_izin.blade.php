@@ -1,143 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Surat Izin Keluar - SMK Prakarya Internasional</title>
+    <title>SMK Prakarya Internasional</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #f2f2f2;
         }
 
         .container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
+            width: 100%; /* Lebar kertas full */
+            margin: 20px auto;
             padding: 20px;
-            border-radius: 10px;
+            background-color: #fff;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
         .header {
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #6c5ce7;
-            padding-bottom: 20px;
-            position: relative;
         }
 
-        .header h2 {
-            color: #6c5ce7;
-            margin-bottom: 25px;
+        .header h1 {
+            font-size: 20px;
+            margin: 0;
         }
 
         .header p {
+            font-size: 14px;
             margin: 0;
-            color: #555;
-        }
-
-        .header img {
-            position: absolute;
-            top: 20px;
-            left: 60px;
-            width: 60px;
-            height: auto;
         }
 
         .content {
-            margin-top: 30px;
-        }
-
-        .form-group {
+            padding: 20px;
             margin-bottom: 20px;
-            display: flex;
         }
 
-        .form-group label {
-            font-weight: bold;
-            color: #555;
-            width: 120px;
-            margin-right: 10px;
+        .content p {
+            margin-bottom: 5px;
         }
 
-        .form-group span {
-            flex: 1;
-        }
         .signature {
-    text-align: right;
-    margin-top: 10px;
-    position: relative;
-}
-
-.signature p {
-    margin: 35px 0;
-    font-size: 16px;
-    font-style: italic;
-}
-
-.signature p:first-child {
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-top: 2px solid #333;
-    width: 200px; /* Sesuaikan lebar garis atas */
-}
-
-
-        .btn-submit {
-            background-color: #6c5ce7;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            text-align: center;
         }
 
-        .btn-submit:hover {
-            background-color: #4a3db4;
+        .signature p {
+            margin-top: 20px;
+            display: inline-block;
+            width: 45%;
+        }
+
+        .signature .left-signature {
+            text-align: left;
+            float: left;
+        }
+
+        .signature .right-signature {
+            text-align: left; /* Menggeser tanda tangan ke kiri */
+            float: right;
+            margin-right: 30px; /* Menggeser ke kiri sedikit lagi */
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            font-size: 10px;
+            margin: 0;
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{  public_path('logo_pi.png') }}" alt="Logo SMK Prakarya Internasional">
-            <h2>Surat Izin Keluar</h2>
-            <p>SMK Prakarya Internasional</p>
-            <p>Jl. Inhoftank No.46-146, Pelindung Hewan, Kec. Astanaanyar, Kota Bandung, Jawa Barat 40243</p>
+            <h1>Yayasan Pendidikan Teknologi Prakarya Internasional 1952</h1>
+            <p>SMK PRAKARYA INTERNASIONAL [SMK PI]</p>
+            <p>Jalan Inhoftank Nomor 46-146 Pelindung</p>
+            <p>Hewan, Astanaanyar, Bandung 40243, Indonesia</p>
+            <p>Telepon/Faksimile: (022) 520-8637 | website: www.smk-pi.sch.id | e-mail: info@smk-pl.sch.id</p>
         </div>
 
         <div class="content">
-            <h3>Keterangan surat keluar</h3>
-            <div class="form-group">
-                <label for="nama">Nama:</label>
-                <span>{{ $izin->siswa->nama }}</span>
+            <h2>Surat Izin Keluar</h2>
+
+            <div class="content-info">
+                <div style="width: 50%; float: left;">
+                    <p>Nama:{{ $izin->siswa->nama }}</p>
+                    <p>Kelas:{{ $izin->siswa->kelas }} {{ $izin->siswa->jurusan }}</p>
+                    <p>Alasan:{{ $izin->alasan }}</p>
+                </div>
+                <div style="width: 50%; float: right;">
+                    <p>Mata Pelajaran: {{ $izin->mapel }}</p> <!-- Memindahkan lokasi tempat ke sini -->
+                    <p>Hari & Tanggal: {{ strftime('%A, %d/%m/%Y %H:%M', strtotime($izin->created_at)) }}</p> <!-- Memindahkan hari & tanggal ke sini -->
+                </div>
+                <div style="clear: both;"></div>
             </div>
-            <div class="form-group">
-                <label for="alasan">Alasan:</label>
-                <span>{{ $izin->alasan }}</span>
-            </div>
-            <div class="form-group">
-                <label for="mapel">Mapel:</label>
-                <span>{{ $izin->mapel }}</span>
-            </div>
-            <div class="form-group">
-                <label for="tanggal">Tanggal Dibuat:</label>
-                <span>{{ $izin->created_at->format('d/m/Y H:i') }}</span>
-            </div>
+
+            <p>Diizinkan Keluar di jam Pembelajaran ke __ dengan alasan __ demikian siswa/i yang bersangkutan dapat keluar kelas atas izin Guru Mata Pelajaran.</p>
+
             <div class="signature">
-                <p>Tanda Tangan Guru</p>
+                <div class="left-signature">
+                    <p>Penanggung Jawab</p>
+                    <p>(___________)</p>
+                </div>
+                <div class="right-signature">
+                    <p>Kaprog</p>
+                    <p>(___________)</p>
+                </div>
+                <div style="clear: both;"></div>
             </div>
+
+            <p style="text-align: right;  margin-right: 30px; /* Menggeser ke kiri sedikit lagi */
+            ">Bandung, {{ $izin->created_at->format('d/m/Y') }}</p>
+        </div>
+
+        <div class="footer">
+            <p>**Mohon surat ini dibawa oleh siswa/i yang bersangkutan dan diberikan kepada guru yang bersangkutan saat siswa/i izin keluar kelas.**</p>
         </div>
     </div>
 </body>
-
 </html>

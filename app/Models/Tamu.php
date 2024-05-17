@@ -9,6 +9,7 @@ class Tamu extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'identitas',
         'nama',
         'darimana',
         'kemana',
