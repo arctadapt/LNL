@@ -90,9 +90,9 @@ class keluarKampusController extends Controller
     public function storeSuratTamu(Request $request)
     {
         $validatedData = $request->validate([
-            'identitas' => 'required',
+            'identitas' => 'nullable',
             'nama' => 'required',
-            'darimana' => 'required',
+            'darimana' => 'nullable',
             'kemana' => 'required',
         ]);
 

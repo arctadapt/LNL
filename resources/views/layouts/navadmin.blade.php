@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -56,6 +57,7 @@
     <script src="{{ asset('dashboard-admin/assets/js/config.js') }}"></script>
 
 
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'node_modules/flowbite/flowbite.min.js'])
 </head>
 
 <body>
@@ -69,11 +71,12 @@
                     <div class="app-brand demo">
                         <a href="{{ url('dashboard') }}" class="app-brand-link">
 
-                                <img src="{{ asset('logo_pi.png') }}" alt="Logo" width="25%" style="margin-left: -30px">
+                            <img src="{{ asset('logo_pi.png') }}" alt="Logo" width="25%"
+                                style="margin-left: -30px">
 
-                            <span class="app-brand-text demo menu-text fw-bold ms-2" style="text-transform: uppercase;">SMK PI</span>
+                            <span class="app-brand-text demo menu-text fw-bold ms-2"
+                                style="text-transform: uppercase;">SMK PI</span>
                         </a>
-
                     </div>
 
                     {{-- <!-- Add this button wherever you want the logout button to appear -->
@@ -87,47 +90,57 @@
                         </x-dropdown-link>
                     </form> --}}
 
-
-
                     <a href="javascript:void(0);"
                         class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-                        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+                        <i class="align-middle bx bx-chevron-left bx-sm"></i>
                     </a>
                 </div>
 
                 <div class="menu-inner-shadow"></div>
 
-                <ul class="menu-inner py-1">
+                <ul class="py-1 menu-inner">
                     <!-- dashboard-admins -->
-                    <li class="menu-item active open">
-                        <a href="{{ route('home') }}" class="menu-link ">
+                    <x-nav-link class="menu-item" :active="request()->routeIs('dashboard')">
+                        <a href="{{ route('dashboard') }}" class="menu-link ">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Dashboards">Dashboards</div>
                         </a>
-                    </li>
-
-
+                    </x-nav-link>
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Apps &amp; Pages</span>
                     </li>
                     <!-- Apps -->
-                    <li class="menu-item">
+                    <x-nav-link class="menu-item" :active="request()->routeIs('siswa.index')">
                         <a href="{{ route('siswa.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-group"></i>
                             <div data-i18n="Siswa">Siswa</div>
                             <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto"></div>
                         </a>
-                    </li>
-                    <li class="menu-item">
+                    </x-nav-link>
+                    <x-nav-link class="menu-item" :active="request()->routeIs('kelas.index')">
                         <a href="{{ route('kelas.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-chalkboard"></i>
                             <div data-i18n="Kelas">Kelas</div>
                             <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto"></div>
                         </a>
-                    </li>
+                    </x-nav-link>
 
-                    <li class="menu-item active open">
+                    <x-nav-link class="menu-item" :active="request()->routeIs([
+                        'data.index',
+                        'data.terlambat',
+                        'filter.terlambat',
+                        'data.guest',
+                        'filter.guest',
+                    ])">
+                        <a href="{{ route('data.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-chalkboard"></i>
+                            <div data-i18n="Kelas">Data</div>
+                            <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto"></div>
+                        </a>
+                    </x-nav-link>
+
+                    <li class="menu-item">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a href="{{ route('logout') }}" class="menu-link"
@@ -137,10 +150,7 @@
                             </a>
                         </form>
                     </li>
-
-
                     <!-- Pages -->
-
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -152,7 +162,7 @@
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <a class="px-0 nav-item nav-link me-xl-4" href="javascript:void(0)">
                             <i class="bx bx-menu bx-sm"></i>
                         </a>
                     </div>
@@ -162,13 +172,13 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                                <input type="text" class="border-0 shadow-none form-control ps-1 ps-sm-2"
                                     placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
 
-                        <ul class="navbar-nav flex-row align-items-center ms-auto">
+                        <ul class="flex-row navbar-nav align-items-center ms-auto">
                             <!-- Place this tag where you want the button to render. -->
                             <li class="nav-item lh-1 me-3">
                                 <a class="github-button"
@@ -193,34 +203,32 @@
 
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                {{-- <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
                                         @if ($user->image)
                                             <img src="{{ asset('storage/' . $user->image) }}" alt="User Image"
-                                                class="img-thumbnail w-px-40 h-auto rounded-circle">
+                                                class="h-auto img-thumbnail w-px-40 rounded-circle">
                                         @else
                                             <span>Tidak ada gambar</span>
                                         @endif
                                     </div>
-                                </a>
+                                </a> --}}
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a class="dropdown-item" href="#">
                                             <div class="d-flex">
-                                                <div class="flex-shrink-0 me-3">
+                                                {{-- <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-
                                                         @if ($user->image)
                                                             <img src="{{ asset('storage/' . $user->image) }}"
                                                                 alt="User Image"
-                                                                class="img-thumbnail w-px-40 h-auto rounded-circle">
+                                                                class="h-auto img-thumbnail w-px-40 rounded-circle">
                                                         @else
                                                             <span>Tidak ada gambar</span>
                                                         @endif
-
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class="flex-grow-1">
                                                     @if (Auth::check())
                                                         <span
@@ -251,9 +259,9 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#">
-                                            <span class="d-flex align-items-center align-middle">
+                                            <span class="align-middle d-flex align-items-center">
                                                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                                <span class="align-middle flex-grow-1 ms-1">Billing</span>
                                                 <span
                                                     class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                                             </span>
@@ -279,14 +287,14 @@
 
                 <!-- / Navbar -->
 
-                <div class="content-wrapper">
+                <div class="mt-3 content-wrapper">
                     @yield('content')
                 </div>
                 <!-- / Content -->
 
                 <!-- Footer -->
-                <footer class="content-footer footer bg-footer-theme">
-                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                {{-- <footer class="content-footer footer bg-footer-theme">
+                    <div class="flex-wrap py-2 container-xxl d-flex justify-content-between flex-md-row flex-column">
                         <div class="mb-2 mb-md-0">
                             ©
                             <script>
@@ -309,7 +317,7 @@
                                 target="_blank" class="footer-link">Support</a>
                         </div>
                     </div>
-                </footer>
+                </footer> --}}
                 <!-- / Footer -->
 
                 <div class="content-backdrop fade"></div>

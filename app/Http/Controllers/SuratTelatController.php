@@ -18,7 +18,7 @@ class SuratTelatController extends Controller
     public function store(Request $request) {
         $request->validate([
             'siswa_id' => 'required',
-            'jamMasuk' => 'required',
+            'jamMasuk' => 'nullable',
             'alasan' => 'nullable',
         ]);
 

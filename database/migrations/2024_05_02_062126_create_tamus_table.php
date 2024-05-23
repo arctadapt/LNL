@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('identitas');
             $table->string('nama');
-            $table->string('darimana');
+            $table->string('darimana')->nullable();
             $table->string('kemana');
             $table->timestamps();
         });
