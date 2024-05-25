@@ -94,6 +94,7 @@ class keluarKampusController extends Controller
             'nama' => 'required',
             'darimana' => 'nullable',
             'kemana' => 'required',
+            'keperluan' => 'required'
         ]);
 
         // Create PerpindahanKelas record
@@ -112,5 +113,4 @@ class keluarKampusController extends Controller
         // Download PDF
         return $response;
     }
-
 }

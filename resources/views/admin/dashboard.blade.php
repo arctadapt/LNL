@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="col">
-                    <table class="bg-white table table-striped w-full">
+                    <table class="bg-white shadow-md table table-striped w-full">
                         <thead>
                             <tr>
                                 <th>Nama</th>
@@ -48,17 +48,17 @@
 
         <div class="mx-4 mt-4">
             <h2>
-                <a href="{{ route('data.guest') }}" class="text-black text-3xl">Tamu Yang Datang Pada Bulan
-                    <b>{{ Carbon\Carbon::now()->translatedFormat('F') }}</b>
+                <a href="{{ route('data.guest') }}" class="text-black text-3xl">
+                    Tamu Yang Datang Pada Bulan <b>{{ Carbon\Carbon::now()->translatedFormat('F') }}</b>
                 </a>
             </h2>
-            <div class="mx-1 mt-2">
+            <div class="mx-1 mt-2 shadow-md">
                 <table class="bg-white table table-striped w-full">
                     <thead>
                         <tr>
                             <th>Nama</th>
                             <th>Dari</th>
-                            <th>Tujuan</th>
+                            <th>Ke</th>
                             <th>Waktu</th>
                         </tr>
                     </thead>

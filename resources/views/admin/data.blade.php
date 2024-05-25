@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex gap-3 mx-4 ">
         <a href="{{ route('data.terlambat') }}"
-            class="col flex text-black  bg-white p-3 link-underline link-underline-opacity-0">
+            class="col flex text-black  bg-white p-3 link-underline link-underline-opacity-0 shadow-lg">
             <div class="w-1/4 text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="7em" height="7em" viewBox="0 0 256 256">
                     <path fill="currentColor"
@@ -19,7 +19,7 @@
         </a>
 
         <a href="{{ route('data.guest') }}"
-            class="col text-black bg-white flex p-3 link-underline link-underline-opacity-0">
+            class="col text-black bg-white flex p-3 link-underline link-underline-opacity-0 shadow-lg">
             <div class="w-1/4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="7em" height="7em" viewBox="0 0 16 16">
                     <path fill="currentColor"
@@ -27,9 +27,9 @@
                 </svg>
             </div>
             <div class="w-3/4">
-                <p>Jumlah Tamu Hari Ini : <b>{{ $guestsMonth }}</b></p>
+                <p>Jumlah Tamu Hari Ini : <b>{{ $guestsToday }}</b></p>
                 <p>Jumlah Tamu Minggu Ini : <b>{{ $guestsWeek }}</b></p>
-                <p>Jumlah Tamu Bulan Ini : <b>{{ $guestsToday }}</b></p>
+                <p>Jumlah Tamu Bulan Ini : <b>{{ $guestsMonth }}</b></p>
             </div>
         </a>
     </div>

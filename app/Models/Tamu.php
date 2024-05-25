@@ -13,5 +13,6 @@ class Tamu extends Model
         'nama',
         'darimana',
         'kemana',
+        'keperluan',
     ];
 }

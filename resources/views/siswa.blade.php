@@ -3,24 +3,24 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <!-- Form Import Siswa -->
-        <div class="mt-4 card">
-            <div class="card-body">
-                <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data">
+        <div class="mt-4 bg-white p-3 mb-3 shadow-md">
+            <div class="">
+                <form action="{{ route('siswa.import') }}" method="POST" enctype="multipart/form-data" class="flex">
                     @csrf
-                    <div class="mb-3">
+                    <div class="">
                         <label for="fileInput" class="form-label">Pilih file untuk diimpor:</label>
-                        <input type="file" name="file" class="form-control" id="fileInput">
+                        <input type="file" name="file" class="form-control py-1" id="fileInput">
                     </div>
-                    <button type="submit" class="btn btn-success">Import Siswa</button>
+                    <div class="flex flex-col justify-end">
+                        <button type="submit" class="btn btn-success">Import Siswa</button>
+                    </div>
                 </form>
             </div>
         </div>
 
         <!-- Striped Rows -->
         <div class="card">
-            <h5 class="card-header">
 
-            </h5>
             <div class="table-responsive text-nowrap">
                 <table class="table table-striped" id="myTable">
                     <thead>

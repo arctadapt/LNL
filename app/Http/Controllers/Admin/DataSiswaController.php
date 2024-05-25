@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\GuestsExport;
+use App\Exports\LatesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Izin;
 use App\Models\SuratTerlambat;
 use App\Models\Tamu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataSiswaController extends Controller
 {
@@ -53,8 +56,8 @@ class DataSiswaController extends Controller
 
     public function terlambat()
     {
-        $terlambats = SuratTerlambat::get();
-        $interval = '';
+        $terlambats = SuratTerlambat::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
+        $interval = 'day';
 
         return view('admin.terlambat', compact('terlambats', 'interval'));
     }
@@ -62,24 +65,32 @@ class DataSiswaController extends Controller
     public function filterLate(Request $request)
     {
         $interval = $request->input('interval');
+        $export = $request->input('export');
 
         switch ($interval) {
             case 'day':
-                $terlambats = SuratTerlambat::whereDate('created_at', Carbon::today())->get();
+                $terlambats = SuratTerlambat::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
                 break;
             case 'week':
                 $startOfWeek = Carbon::now()->startOfWeek();
                 $endOfWeek = Carbon::now()->endOfWeek();
-                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfWeek, $endOfWeek])->get();
+                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfWeek, $endOfWeek])->orderBy('created_at', 'desc')->get();
                 break;
             case 'month':
                 $startOfMonth = Carbon::now()->startOfMonth();
                 $endOfMonth = Carbon::now()->endOfMonth();
-                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
+                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfMonth, $endOfMonth])->orderBy('created_at', 'desc')->get();
+                break;
+            case 'all':
+                $terlambats = SuratTerlambat::latest()->get();
                 break;
             default:
-                $terlambats = [];
+                $terlambats = collect();
                 break;
+        }
+
+        if ($export && $export === 'excel') {
+            return Excel::download(new LatesExport($terlambats), 'terlambat.xls');
         }
 
         return view('admin.terlambat', compact('terlambats', 'interval'));
@@ -87,8 +98,10 @@ class DataSiswaController extends Controller
 
     public function guest()
     {
-        $guests = Tamu::latest()->get();
-        $interval = '';
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+        $guests = Tamu::whereBetween('created_at', [$startOfMonth, $endOfMonth])->orderBy('created_at', 'desc')->get();
+        $interval = 'month';
 
         return view('admin.guest', compact('guests', 'interval'));
     }
@@ -96,24 +109,32 @@ class DataSiswaController extends Controller
     public function filterGuest(Request $request)
     {
         $interval = $request->input('interval');
+        $export = $request->input('export');
 
         switch ($interval) {
             case 'day':
-                $guests = Tamu::whereDate('created_at', Carbon::today())->get();
+                $guests = Tamu::whereDate('created_at', Carbon::today())->orderBy('created_at', 'desc')->get();
                 break;
             case 'week':
                 $startOfWeek = Carbon::now()->startOfWeek();
                 $endOfWeek = Carbon::now()->endOfWeek();
-                $guests = Tamu::whereBetween('created_at', [$startOfWeek, $endOfWeek])->get();
+                $guests = Tamu::whereBetween('created_at', [$startOfWeek, $endOfWeek])->orderBy('created_at', 'desc')->get();
                 break;
             case 'month':
                 $startOfMonth = Carbon::now()->startOfMonth();
                 $endOfMonth = Carbon::now()->endOfMonth();
-                $guests = Tamu::whereBetween('created_at', [$startOfMonth, $endOfMonth])->get();
+                $guests = Tamu::whereBetween('created_at', [$startOfMonth, $endOfMonth])->orderBy('created_at', 'desc')->get();
+                break;
+            case 'all':
+                $guest = Tamu::latest()->get();
                 break;
             default:
-                $guests = [];
+                $guests = collect();
                 break;
+        }
+
+        if ($export && $export === 'excel') {
+            return Excel::download(new GuestsExport($guests), 'guests.xls');
         }
 
         return view('admin.guest', compact('guests', 'interval'));

@@ -296,13 +296,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="darimana">Darimana</label>
+                        <label for="darimana">Dari</label>
                         <input type="text" name="darimana" class="form-control" id="darimana" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="kemana">Kemana</label>
+                        <label for="kemana">Ke</label>
                         <input type="text" name="kemana" class="form-control" id="kemana" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keperluan">Keperluan</label>
+                        <input type="text" name="keperluan" class="form-control" id="keperluan" required>
                     </div>
 
                     <div class="flex justify-end">
@@ -323,7 +328,8 @@
                     @csrf
                     <select name="siswa_id" id="siswa_id" class="w-full py-2">
                         @foreach ($siswas as $siswa)
-                            <option value="{{ $siswa->id }}">{{ $siswa->nama }}</option>
+                            <option value="{{ $siswa->id }}">
+                                {{ $siswa->nama . ' - ' . $siswa->kelas . ' ' . $siswa->jurusan }}</option>
                         @endforeach
                     </select>
 
@@ -375,6 +381,26 @@
                         location.reload();
                     })
                     .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#createFormPerpindahankelas').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '{{ route('keluar-kampus.storePindahkelas') }}', // Replace with your route URL
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        window.open(response.pdf_url, '_blank');
+                    },
+                    error: function(xhr) {
+                        alert('An error occurred while generating the PDF.');
+                    }
+                });
             });
         });
     </script>
