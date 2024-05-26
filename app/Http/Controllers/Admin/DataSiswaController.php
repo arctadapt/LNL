@@ -81,6 +81,19 @@ class DataSiswaController extends Controller
                 $endOfMonth = Carbon::now()->endOfMonth();
                 $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfMonth, $endOfMonth])->orderBy('created_at', 'desc')->get();
                 break;
+            case 'yesterday':
+                $terlambats = SuratTerlambat::whereDate('created_at', Carbon::yesterday())->orderBy('created_at', 'desc')->get();
+                break;
+            case 'lastWeek':
+                $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
+                $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
+                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])->orderBy('created_at', 'desc')->get();
+                break;
+            case 'lastMonth':
+                $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+                $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
+                $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->orderBy('created_at', 'desc')->get();
+                break;
             case 'all':
                 $terlambats = SuratTerlambat::latest()->get();
                 break;
@@ -94,6 +107,13 @@ class DataSiswaController extends Controller
         }
 
         return view('admin.terlambat', compact('terlambats', 'interval'));
+    }
+
+    public function lateDelete($id)
+    {
+        SuratTerlambat::find($id)->delete();
+
+        return redirect()->back();
     }
 
     public function guest()
@@ -125,8 +145,21 @@ class DataSiswaController extends Controller
                 $endOfMonth = Carbon::now()->endOfMonth();
                 $guests = Tamu::whereBetween('created_at', [$startOfMonth, $endOfMonth])->orderBy('created_at', 'desc')->get();
                 break;
+            case 'yesterday':
+                $guests = Tamu::whereDate('created_at', Carbon::yesterday())->orderBy('created_at', 'desc')->get();
+                break;
+            case 'lastWeek':
+                $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
+                $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
+                $guests = Tamu::whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])->orderBy('created_at', 'desc')->get();
+                break;
+            case 'lastMonth':
+                $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+                $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
+                $guests = Tamu::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->orderBy('created_at', 'desc')->get();
+                break;
             case 'all':
-                $guest = Tamu::latest()->get();
+                $guests = Tamu::latest()->get();
                 break;
             default:
                 $guests = collect();
@@ -138,5 +171,12 @@ class DataSiswaController extends Controller
         }
 
         return view('admin.guest', compact('guests', 'interval'));
+    }
+
+    public function guestDelete($id)
+    {
+        Tamu::find($id)->delete();
+
+        return redirect()->back();
     }
 }

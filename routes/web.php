@@ -29,9 +29,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(DataSiswaController::class)->group(function () {
         Route::get('data', 'index')->name('data.index');
         Route::get('data/izin', 'izin')->name('data.izin');
+
         Route::get('data/terlambat', 'terlambat')->name('data.terlambat');
+        Route::delete('data/terlambat/delete/{id}', 'lateDelete')->name('data.lateDelete');
         Route::get('data/terlambat/filter', 'filterLate')->name('filter.terlambat');
+
         Route::get('data/guest', 'guest')->name('data.guest');
+        Route::delete('data/guest/delete/{id}', 'guestDelete')->name('data.guestDelete');
         Route::get('data/guest/filter', 'filterGuest')->name('filter.guest');
     });
 });

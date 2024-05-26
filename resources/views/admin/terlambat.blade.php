@@ -4,17 +4,26 @@
     <div class="p-3 mx-4 card">
         <form method="GET" action="{{ route('filter.terlambat') }}" class="flex justify-between mb-3">
             <div>
-                <select name="interval">
+                <select name="interval" class="rounded-md">
                     <option value="day" @if ($interval == 'day') selected @endif>Hari Ini</option>
                     <option value="week" @if ($interval == 'week') selected @endif>Minggu Ini</option>
                     <option value="month" @if ($interval == 'month') selected @endif>Bulan Ini</option>
+                    <li>
+                        <hr class="">
+                    </li>
+                    <option value="yesterday" @if ($interval == 'yesterday') selected @endif>Kemarin</option>
+                    <option value="lastWeek" @if ($interval == 'lastWeek') selected @endif>Minggu Kemarin</option>
+                    <option value="lastMonth" @if ($interval == 'lastMonth') selected @endif>Bulan Kemarin</option>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <option value="all" @if ($interval == 'all') selected @endif>Semua</option>
                 </select>
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white font-bold">Filter</button>
             </div>
 
             <button type="submit" name="export" value="excel" class="p-2 bg-green-500 rounded-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="auto" class="" viewBox="0 0 32 32 ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" class="" viewBox="0 0 32 32 ">
                     <defs>
                         <linearGradient id="vscodeIconsFileTypeExcel0" x1="4.494" x2="13.832" y1="-2092.086"
                             y2="-2075.914" gradientTransform="translate(0 2100)" gradientUnits="userSpaceOnUse">
@@ -52,6 +61,7 @@
                     <td>Kelas</td>
                     <td>Alasan</td>
                     <td>Waktu</td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
@@ -59,18 +69,35 @@
                     <tr>
                         <td>{{ $terlambat->siswa->nis }}</td>
                         <td>{{ $terlambat->siswa->nama }}</td>
-                        <td>{{ $terlambat->siswa->kelas . ' ' . $terlambat->siswa->jurusan }}</td>
+                        <td>{{ $terlambat->siswa->kelas . ' - ' . $terlambat->siswa->jurusan }}</td>
                         <td>{{ $terlambat->alasan }}</td>
                         <td>
                             {{ $terlambat->created_at->locale('id')->translatedFormat('d F Y') .
                                 ' / ' .
                                 $terlambat->created_at->format('H:i T') }}
                         </td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="p-0 btn dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <form action="{{ route('data.lateDelete', $terlambat->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="bx bx-trash me-1"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 @empty
-                    <div class="mx-auto pb-3">
+                    {{-- <div class="mx-auto pb-3">
                         Tidak Ada Siswa Yang Terlambat Hari Ini
-                    </div>
+                    </div> --}}
                 @endforelse
             </tbody>
         </table>

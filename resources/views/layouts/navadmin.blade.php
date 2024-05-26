@@ -56,8 +56,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('dashboard-admin/assets/js/config.js') }}"></script>
 
-
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'node_modules/flowbite/flowbite.min.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'node_modules/flowbite/dist/flowbite.min.js'])
 </head>
 
 <body>
@@ -134,8 +133,11 @@
                         'filter.guest',
                     ])">
                         <a href="{{ route('data.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-chalkboard"></i>
-                            <div data-i18n="Kelas">Data</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M20 17V7c0-2.168-3.663-4-8-4S4 4.832 4 7v10c0 2.168 3.663 4 8 4s8-1.832 8-4M12 5c3.691 0 5.931 1.507 6 1.994C17.931 7.493 15.691 9 12 9S6.069 7.493 6 7.006C6.069 6.507 8.309 5 12 5M6 9.607C7.479 10.454 9.637 11 12 11s4.521-.546 6-1.393v2.387c-.069.499-2.309 2.006-6 2.006s-5.931-1.507-6-2zM6 17v-2.393C7.479 15.454 9.637 16 12 16s4.521-.546 6-1.393v2.387c-.069.499-2.309 2.006-6 2.006s-5.931-1.507-6-2" />
+                            </svg>
+                            <div data-i18n="Kelas" class="ms-2">Data</div>
                             <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto"></div>
                         </a>
                     </x-nav-link>
