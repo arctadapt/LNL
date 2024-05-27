@@ -55,6 +55,7 @@ Route::controller(keluarKampusController::class)->group(function () {
     Route::post('keluar-kampus/storeIzinkeluar', 'storeIzinkeluar')->name('keluar-kampus.storeIzinkeluar');
     Route::post('keluar-kampus/storePindahkelas', 'storePindahkelas')->name('keluar-kampus.storePindahkelas');
     Route::post('keluar-kampus/storeSuratTamu',  'storeSuratTamu')->name('keluar-kampus.storeSuratTamu');
+    Route::get('/pdf/{filename}', 'showPdf')->name('showPdf');
 });
 
 // etc

@@ -23,6 +23,31 @@ class keluarKampusController extends Controller
         return view('home', compact('izins', 'siswas', 'perpindahanKelas', 'kelas'));
     }
 
+    // public function storePindahkelas(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'kelas_id' => 'required|exists:kelas,id',
+    //         'jumlah_siswa' => 'required|integer|min:1',
+    //         'mapel' => 'required|string|max:255',
+    //     ]);
+
+    //     // Create PerpindahanKelas record
+    //     $perpindahanKelas = PerpindahanKelas::create($validatedData);
+
+    //     // Generate PDF content with eager loading for perpindahan_kelas (if needed)
+    //     $pdf = PDF::loadView('pdf.perpindahan_kelas', compact('perpindahanKelas'));
+
+    //     // Set PDF download headers
+    //     $filename = 'perpindahan_kelas_' . $perpindahanKelas->id . '.pdf';
+    //     $response = Response::make($pdf->output(), 200, [
+    //         'Content-Type' => 'application/pdf',
+    //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    //     ]);
+
+    //     // Download PDF
+    //     return $response;
+    // }
+
     public function storePindahkelas(Request $request)
     {
         $validatedData = $request->validate([
@@ -34,19 +59,23 @@ class keluarKampusController extends Controller
         // Create PerpindahanKelas record
         $perpindahanKelas = PerpindahanKelas::create($validatedData);
 
-        // Generate PDF content with eager loading for perpindahan_kelas (if needed)
+        // Generate PDF content
         $pdf = PDF::loadView('pdf.perpindahan_kelas', compact('perpindahanKelas'));
-
-        // Set PDF download headers
         $filename = 'perpindahan_kelas_' . $perpindahanKelas->id . '.pdf';
-        $response = Response::make($pdf->output(), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ]);
 
-        // Download PDF
-        return $response;
+        // Ensure the directory exists
+        $directory = public_path('pdf');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        // Save the PDF file
+        $pdf->save($directory . '/' . $filename);
+
+        // Redirect to a route that shows the PDF
+        return redirect()->route('showPdf', ['filename' => $filename]);
     }
+
 
     public function storeIzinkeluar(Request $request)
     {
@@ -87,30 +116,74 @@ class keluarKampusController extends Controller
 
 
 
+    // public function storeSuratTamu(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'identitas' => 'nullable',
+    //         'nama' => 'required',
+    //         'darimana' => 'nullable',
+    //         'kemana' => 'required',
+    //         'keperluan' => 'required'
+    //     ]);
+
+    //     // Create PerpindahanKelas record
+    //     $tamu = Tamu::create($validatedData);
+
+    //     // Generate PDF content with eager loading for perpindahan_kelas (if needed)
+    //     $pdf = PDF::loadView('pdf.surat_tamu', compact('tamu'));
+
+    //     // Set PDF download headers
+    //     $filename = 'surat_tamu' . $tamu->id . '.pdf';
+    //     $response = Response::make($pdf->output(), 200, [
+    //         'Content-Type' => 'application/pdf',
+    //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    //     ]);
+
+    //     // Download PDF
+    //     return $response;
+    // }
+
     public function storeSuratTamu(Request $request)
     {
         $validatedData = $request->validate([
             'identitas' => 'nullable',
-            'nama' => 'required',
-            'darimana' => 'nullable',
-            'kemana' => 'required',
-            'keperluan' => 'required'
+            'nama' => 'required|string|max:255',
+            'darimana' => 'nullable|string|max:255',
+            'kemana' => 'required|string|max:255',
+            'keperluan' => 'required|string|max:255'
         ]);
 
-        // Create PerpindahanKelas record
+        // Create Tamu record
         $tamu = Tamu::create($validatedData);
 
-        // Generate PDF content with eager loading for perpindahan_kelas (if needed)
+        // Generate PDF content
         $pdf = PDF::loadView('pdf.surat_tamu', compact('tamu'));
+        $filename = 'surat_tamu_' . $tamu->id . '.pdf';
 
-        // Set PDF download headers
-        $filename = 'surat_tamu' . $tamu->id . '.pdf';
-        $response = Response::make($pdf->output(), 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ]);
+        // Ensure the directory exists
+        $directory = public_path('pdf');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
 
-        // Download PDF
-        return $response;
+        // Save the PDF file
+        $pdf->save($directory . '/' . $filename);
+
+        // Return URL of the PDF file
+        $pdfUrl = url('pdf/' . $filename);
+
+        // Redirect to a route that shows the PDF
+        return redirect()->route('showPdf', ['filename' => $filename]);
+    }
+
+    public function showPdf($filename)
+    {
+        $filePath = public_path('pdf/' . $filename);
+
+        if (!file_exists($filePath)) {
+            abort(404);
+        }
+
+        return response()->file($filePath);
     }
 }
