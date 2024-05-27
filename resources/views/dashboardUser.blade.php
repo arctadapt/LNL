@@ -326,7 +326,7 @@
             <div class="flex flex-col w-full p-5 text-black bg-white border shadow-sm pointer-events-auto rounded-xl">
                 <form action="{{ route('terlambat.store') }}" method="POST" class="space-y-3">
                     @csrf
-                    <select name="siswa_id" id="siswa_id" class="w-full py-2">
+                    <select name="siswa_id" id="student_id" class="w-full py-2">
                         @foreach ($siswas as $siswa)
                             <option value="{{ $siswa->id }}">
                                 {{ $siswa->nama . ' - ' . $siswa->kelas . ' ' . $siswa->jurusan }}</option>
@@ -427,6 +427,25 @@
 
     <script>
         $('#siswa_id').select2({
+            placeholder: 'Cari Siswa...',
+            allowClear: true,
+            theme: "classic",
+            templateResult: function(data) {
+                if (!data.id) {
+
+                    return data.text;
+                }
+
+                var $result = $('<span></span>');
+                $result.text(data.text);
+                $result.css('color', 'black');
+
+                return $result;
+            }
+        });
+    </script>
+      <script>
+        $('#student_id').select2({
             placeholder: 'Cari Siswa...',
             allowClear: true,
             theme: "classic",
