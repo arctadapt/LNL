@@ -12,7 +12,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $terlambats = SuratTerlambat::whereMonth('created_at', Carbon::now()->month)->orderby('created_at', 'desc')->paginate(5);
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $terlambats = SuratTerlambat::whereBetween('created_at', [$startOfWeek, $endOfWeek])->orderBy('created_at', 'desc')->paginate(5);
+
         $guests = Tamu::whereMonth('created_at', Carbon::now()->month)->orderby('created_at', 'desc')->paginate(5);
 
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY);

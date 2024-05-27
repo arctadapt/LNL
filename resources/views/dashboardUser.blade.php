@@ -140,6 +140,10 @@
         span.select2.select2-container.select2-container--classic {
             width: 100% !important;
         }
+
+        .select2-search__field {
+            color: black;
+        }
     </style>
 </head>
 
@@ -326,7 +330,7 @@
             <div class="flex flex-col w-full p-5 text-black bg-white border shadow-sm pointer-events-auto rounded-xl">
                 <form action="{{ route('terlambat.store') }}" method="POST" class="space-y-3">
                     @csrf
-                    <select name="siswa_id" id="student_id" class="w-full py-2">
+                    <select name="siswa_id" id="student_id" class="w-full py-2 text-black">
                         @foreach ($siswas as $siswa)
                             <option value="{{ $siswa->id }}">
                                 {{ $siswa->nama . ' - ' . $siswa->kelas . ' ' . $siswa->jurusan }}</option>
@@ -342,6 +346,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('identitas').addEventListener('change', function() {
+            var darimanaInput = document.getElementById('darimana');
+            if (this.value === 'orang_tua_siswa') {
+                darimanaInput.value = '-';
+                darimanaInput.readOnly = true;
+            } else {
+                darimanaInput.value = '';
+                darimanaInput.readOnly = false;
+            }
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -444,11 +461,12 @@
             }
         });
     </script>
-      <script>
+    <script>
         $('#student_id').select2({
             placeholder: 'Cari Siswa...',
             allowClear: true,
             theme: "classic",
+            color: "black",
             templateResult: function(data) {
                 if (!data.id) {
 
