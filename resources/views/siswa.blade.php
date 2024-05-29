@@ -1,7 +1,7 @@
 @extends('layouts.navadmin')
 
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
+    <div class="container-xxl flex-grow-1">
         <!-- Form Import Siswa -->
         <div class="mt-4 bg-white p-3 mb-3 shadow-md">
             <div class="">
@@ -20,7 +20,6 @@
 
         <!-- Striped Rows -->
         <div class="card">
-
             <div class="table-responsive text-nowrap">
                 <table class="table table-striped" id="myTable">
                     <thead>

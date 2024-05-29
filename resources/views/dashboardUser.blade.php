@@ -201,12 +201,13 @@
         </div>
     </div>
 
+
     <div id="hs-vertically-centered-modal"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
         <div
             class="hs-overlay-open:opacity-100 mx-auto hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] flex items-center">
             <div class="flex flex-col w-full p-5 text-black bg-white border shadow-sm pointer-events-auto rounded-xl">
-                <form action="{{ route('keluar-kampus.storeIzinkeluar') }}" method="POST" id="createFormIzinkeluar">
+                <form action="{{ route('keluar-kampus.storeIzinkeluar') }}" method="POST">
                     @csrf
                     <div class="text-black form-group">
                         <label for="siswa_id">Nama Siswa</label>
@@ -230,7 +231,7 @@
 
                     <div>
                         <button type="reset" class="text-white btn btn-warning">Reset</button>
-                        <button type="submit" class="btn btn-primary" id="submitForm">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="">Submit</button>
                     </div>
                 </form>
 
@@ -360,7 +361,7 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('createFormIzinkeluar').addEventListener('submit', function(event) {
                 event.preventDefault(); // Mencegah pengiriman formulir biasa
@@ -400,7 +401,7 @@
                     .catch(error => console.error('Error:', error));
             });
         });
-    </script>
+    </script> --}}
 
     <script>
         $(document).ready(function() {

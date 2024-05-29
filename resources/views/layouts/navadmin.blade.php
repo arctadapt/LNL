@@ -56,7 +56,7 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('dashboard-admin/assets/js/config.js') }}"></script>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'node_modules/flowbite/dist/flowbite.min.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -163,7 +163,7 @@
 
                 <!-- / Navbar -->
 
-                <div class="mt-3 content-wrapper">
+                <div class="mt-3 content-wrapper mb-5">
                     @yield('content')
                 </div>
                 <!-- / Content -->

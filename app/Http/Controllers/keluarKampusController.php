@@ -8,7 +8,6 @@ use App\Models\Siswa;
 use App\Models\Tamu;
 use App\Models\PerpindahanKelas;
 use App\Models\Kelas;
-use Illuminate\Support\Facades\Response;
 use PDF;
 
 class keluarKampusController extends Controller
@@ -184,6 +183,6 @@ class keluarKampusController extends Controller
             abort(404);
         }
 
-        return response()->file($filePath);
+        return view('pdf.show', compact('filename'));
     }
 }
