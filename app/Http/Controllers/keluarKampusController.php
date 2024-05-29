@@ -81,19 +81,23 @@ class keluarKampusController extends Controller
         $validatedData = $request->validate([
             'siswa_id' => 'required|array',
             'siswa_id.*' => 'required|exists:siswas,id',
-            'alasan' => 'required|string|max:255',
+            'alasan' => 'required|max:255',
             'mapel' => 'required|string|max:255',
         ]);
 
+        // Loop through each siswa_id and create a PDF for each
         $pdfFiles = [];
-
         foreach ($validatedData['siswa_id'] as $siswaId) {
-            $izin = Izin::create([
+            $izinData = [
                 'siswa_id' => $siswaId,
                 'alasan' => $validatedData['alasan'],
                 'mapel' => $validatedData['mapel'],
-            ]);
+            ];
 
+            // Create Izin record
+            $izin = Izin::create($izinData);
+
+            // Generate PDF content
             $pdf = PDF::loadView('pdf.surat_izin', compact('izin'));
             $filename = 'suratizin-' . $izin->id . '.pdf';
 
@@ -106,14 +110,13 @@ class keluarKampusController extends Controller
             // Save the PDF file
             $pdf->save($directory . '/' . $filename);
 
-            $pdfFiles[] = url('pdf/' . $filename); // Tambahkan URL file PDF ke array
+            // Add URL of the PDF file to the array
+            $pdfFiles[] = url('pdf/' . $filename);
         }
 
         // Return array of PDF file URLs
         return response()->json(['pdf_files' => $pdfFiles]);
     }
-
-
 
     // public function storeSuratTamu(Request $request)
     // {

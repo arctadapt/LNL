@@ -116,8 +116,7 @@
                     <p>Alasan:{{ $siswa->alasan }}</p>
                 </div>
                 <div style="width: 50%; float: right;">
-                    <p>Hari & Tanggal: {{ strftime('%A, %d/%m/%Y %H:%M', strtotime($siswa->created_at)->locale('id')) }}
-                    </p>
+                    <p>Hari & Tanggal: {{ strftime('%A, %d/%m/%Y %H:%M', strtotime($siswa->created_at)) }}</p>
                     <!-- Memindahkan hari & tanggal ke sini -->
                 </div>
                 <div style="clear: both;"></div>
