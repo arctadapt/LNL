@@ -115,6 +115,16 @@
                     <p>Sebagai:{{ $tamu->identitas }}</p>
                     <p>Nama:{{ $tamu->nama }}</p>
                     <p>Darimana:{{ $tamu->darimana }}</p>
+                    <div class="visitor-photo">
+                    <p>Foto:</p>
+                        @if($photoData)
+                            <div style="margin-top: 40px; display: flex; justify-content: center; align-items: center;">
+                                <img src="{{ $photoData }}" alt="Visitor Photo" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; padding: 5px;">
+                            </div>
+                        @else
+                            <p>Tidak ada foto</p>
+                        @endif
+                    </div>
                 </div>
                 <div style="width: 50%; float: right;">
                     <p>Tujuan: {{ $tamu->kemana }}</p>

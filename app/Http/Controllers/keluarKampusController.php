@@ -9,6 +9,7 @@ use App\Models\Tamu;
 use App\Models\PerpindahanKelas;
 use App\Models\Kelas;
 use PDF;
+use Illuminate\Support\Facades\Mail;
 
 class keluarKampusController extends Controller
 {
@@ -21,31 +22,6 @@ class keluarKampusController extends Controller
 
         return view('home', compact('izins', 'siswas', 'perpindahanKelas', 'kelas'));
     }
-
-    // public function storePindahkelas(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'kelas_id' => 'required|exists:kelas,id',
-    //         'jumlah_siswa' => 'required|integer|min:1',
-    //         'mapel' => 'required|string|max:255',
-    //     ]);
-
-    //     // Create PerpindahanKelas record
-    //     $perpindahanKelas = PerpindahanKelas::create($validatedData);
-
-    //     // Generate PDF content with eager loading for perpindahan_kelas (if needed)
-    //     $pdf = PDF::loadView('pdf.perpindahan_kelas', compact('perpindahanKelas'));
-
-    //     // Set PDF download headers
-    //     $filename = 'perpindahan_kelas_' . $perpindahanKelas->id . '.pdf';
-    //     $response = Response::make($pdf->output(), 200, [
-    //         'Content-Type' => 'application/pdf',
-    //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-    //     ]);
-
-    //     // Download PDF
-    //     return $response;
-    // }
 
     public function storePindahkelas(Request $request)
     {
@@ -74,7 +50,6 @@ class keluarKampusController extends Controller
         // Redirect to a route that shows the PDF
         return redirect()->route('showPdf', ['filename' => $filename]);
     }
-
 
     public function storeIzinkeluar(Request $request)
     {
@@ -118,64 +93,84 @@ class keluarKampusController extends Controller
         return response()->json(['pdf_files' => $pdfFiles]);
     }
 
-    // public function storeSuratTamu(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'identitas' => 'nullable',
-    //         'nama' => 'required',
-    //         'darimana' => 'nullable',
-    //         'kemana' => 'required',
-    //         'keperluan' => 'required'
-    //     ]);
-
-    //     // Create PerpindahanKelas record
-    //     $tamu = Tamu::create($validatedData);
-
-    //     // Generate PDF content with eager loading for perpindahan_kelas (if needed)
-    //     $pdf = PDF::loadView('pdf.surat_tamu', compact('tamu'));
-
-    //     // Set PDF download headers
-    //     $filename = 'surat_tamu' . $tamu->id . '.pdf';
-    //     $response = Response::make($pdf->output(), 200, [
-    //         'Content-Type' => 'application/pdf',
-    //         'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-    //     ]);
-
-    //     // Download PDF
-    //     return $response;
-    // }
-
     public function storeSuratTamu(Request $request)
     {
         $validatedData = $request->validate([
-            'identitas' => 'nullable',
+            'identitas' => 'nullable|string|max:255',
             'nama' => 'required|string|max:255',
             'darimana' => 'nullable|string|max:255',
             'kemana' => 'required|string|max:255',
-            'keperluan' => 'required|string|max:255'
+            'keperluan' => 'required|string|max:255',
+            'captured_photo' => 'nullable|string'
         ]);
-
-        // Create Tamu record
+    
+        // Simpan data tamu ke database
         $tamu = Tamu::create($validatedData);
-
-        // Generate PDF content
-        $pdf = PDF::loadView('pdf.surat_tamu', compact('tamu'));
+    
+        // Proses foto yang di-capture
+        $photoData = null;
+        if ($request->has('captured_photo') && $request->captured_photo) {
+            // Dekode base64 image
+            $imageData = $request->captured_photo;
+            
+            // Pisahkan base64 header jika ada
+            if (strpos($imageData, 'base64,') !== false) {
+                list($type, $imageData) = explode('base64,', $imageData);
+            }
+            
+            // Decode base64 image
+            $photoData = base64_decode($imageData);
+        }
+    
+        // Generate PDF dengan foto yang sudah di-decode
+        $pdf = PDF::loadView('pdf.surat_tamu', [
+            'tamu' => $tamu, 
+            'photoData' => $photoData ? 'data:image/jpeg;base64,'.base64_encode($photoData) : null
+        ]);
+    
         $filename = 'surat_tamu_' . $tamu->id . '.pdf';
-
-        // Ensure the directory exists
+    
+        // Simpan PDF ke folder public/pdf
         $directory = public_path('pdf');
         if (!is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
-
-        // Save the PDF file
         $pdf->save($directory . '/' . $filename);
+    
+        // Kirim email ke tujuan berdasarkan "kemana"
+        $toEmail = $this->getEmailByDestination($validatedData['kemana']);
+        if ($toEmail) {
+            Mail::send('emails.surat_tamu', $validatedData, function ($message) use ($toEmail, $filename) {
+                $message->to($toEmail)
+                        ->subject('Surat Tamu Baru')
+                        ->attach(public_path('pdf/' . $filename)); // Lampirkan PDF
+            });
+        }
+    
+        // Redirect ke halaman untuk melihat PDF
+        return redirect()->route('showPdf', ['filename' => $filename])
+                         ->with('success', 'Data tamu berhasil disimpan dan email terkirim.');
+    }
 
-        // Return URL of the PDF file
-        $pdfUrl = url('pdf/' . $filename);
+    private function getEmailByDestination($destination)
+    {
+        $emailMap = [
+            'Kepala Sekolah' => 'mochammadsyamihardiana@gmail.com',
+            'Hubin' => 'hubin@sekolah.com',
+            'Tata Usaha' => 'tu@sekolah.com',
+            'Keuangan' => 'keuangan@sekolah.com',
+            'Kaprog PPLG' => '',
+            'Kaprog MPLB' => '',
+            'Kaprog DKV' => '',
+            'Kaprog TJKT' => '',
+            'Kaprog HR' => '',
+            'Kaprog TMP' => '',
+            'Kaprog TKR' => '',
+            'Kaprog TSM' => ''
+            // Tambahkan email lainnya sesuai kebutuhan
+        ];
 
-        // Redirect to a route that shows the PDF
-        return redirect()->route('showPdf', ['filename' => $filename]);
+        return $emailMap[$destination] ?? null;
     }
 
     public function showPdf($filename)

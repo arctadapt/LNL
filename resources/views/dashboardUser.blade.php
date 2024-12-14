@@ -14,13 +14,21 @@
 
     <!-- Font Awesome -->
     <style>
-        body {
-            /* background-color: #76aeeb; */
-            overflow: hidden;
-            position: relative;
-            color: #ffffff;
+        #camera-section {   
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
         }
-
+        #preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        #capture-btn, #retake-btn {
+            margin: 10px;
+        }
         .shape {
             position: absolute;
             pointer-events: none;
@@ -147,18 +155,15 @@
     </style>
 </head>
 
-<body style="background-image: url({{ asset('bg.jpg') }}); background-size:cover;">
-
+<body style="background-image: url({{ asset('lol.jpg') }}); background-size:cover;">
     <div class="shape bubble" style="top: 10%; left: 10%; width: 60px; height: 60px; background-color: #6c5ce7;"></div>
     <div class="block shape" style="top: 20%; left: 40%; width: 40px; height: 40px; background-color: #6c5ce7;"></div>
     <div class="shape bubble" style="top: 30%; left: 70%; width: 80px; height: 80px; background-color: #6c5ce7;"></div>
     <div class="block shape" style="top: 50%; left: 20%; width: 50px; height: 50px; background-color: #6c5ce7;"></div>
     <div class="shape bubble" style="top: 60%; left: 50%; width: 30px; height: 30px; background-color: #6c5ce7;"></div>
     <div class="block shape" style="top: 80%; left: 80%; width: 70px; height: 70px; background-color: #6c5ce7;"></div>
-
     <div class="logo-container">
-        <img src="logo_pi.png" alt="Logo" class="mx-auto">
-        <div class="school-name">SMK PRAKARYA INTERNASIONAL</div>
+    <img src="pi_blue.png" alt="Logo" class="mx-auto" style="width: 170px; height: auto;">
     </div>
 
     <div class="container">
@@ -201,6 +206,7 @@
         </div>
     </div>
 
+    {{-- IZIN KELUAR --}}
     <div id="hs-vertically-centered-modal"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
         <div
@@ -237,7 +243,8 @@
             </div>
         </div>
     </div>
-    {{-- Modal untuk perpindahan kelas --}}
+
+    {{-- PINDAH KELAS --}}
     <div id="moving-class"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
         <div
@@ -274,7 +281,8 @@
             </div>
         </div>
     </div>
-    {{-- Surat tamu --}}
+
+    {{-- GUEST BOOK --}}
     <div id="surat-tamu"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
         <div
@@ -283,6 +291,19 @@
                 <form action="{{ route('keluar-kampus.storeSuratTamu') }}" method="POST" id="createFormSuratTamu"
                     class="w-full ">
                     @csrf
+
+                    <!-- Camera Section -->
+                    <div id="camera-section" class="mb-4">
+                        <video id="video" width="100%" height="auto" autoplay></video>
+                        <canvas id="canvas" style="display:none;"></canvas>
+                        <img id="preview" alt="Captured Image">
+                        <input type="hidden" name="captured_photo" id="captured-photo-input">
+                        <div>
+                            <button type="button" id="capture-btn" class="btn btn-success">Capture Photo</button>
+                            <button type="button" id="retake-btn" class="btn btn-warning" style="display:none;">Retake Photo</button>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="identitas">Saya adalah</label>
                         <select name="identitas" id="identitas" class="form-control">
@@ -306,7 +327,20 @@
 
                     <div class="form-group">
                         <label for="kemana">Ke</label>
-                        <input type="text" name="kemana" class="form-control" id="kemana" required>
+                        <select name="kemana" id="kemana" class="form-control">
+                            <option value="Kepala Sekolah">Kepala Sekolah</option>
+                            <option value="Hubin">Hubin</option>
+                            <option value="Tata Usaha">Tata Usaha</option>
+                            <option value="Keuangan">Keuangan</option>
+                            <option value="Kaprog PPLG">Kaprog PPLG</option>
+                            <option value="Kaprog MPLB">Kaprog MPLB</option>
+                            <option value="Kaprog DKV">Kaprog DKV</option>
+                            <option value="Kaprog TJKT">Kaprog TJKT</option>
+                            <option value="Kaprog HR">Kaprog HR</option>
+                            <option value="Kaprog TMP">Kaprog TMP</option>
+                            <option value="Kaprog TKR">Kaprog TKR</option>
+                            <option value="Kaprog TSM">Kaprog TSM</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -323,6 +357,7 @@
         </div>
     </div>
 
+    {{-- KETERLAMBATAN --}}
     <div id="terlambat"
         class="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
         <div
@@ -348,6 +383,65 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const preview = document.getElementById('preview');
+            const captureBtn = document.getElementById('capture-btn');
+            const retakeBtn = document.getElementById('retake-btn');
+            const capturedPhotoInput = document.getElementById('captured-photo-input');
+
+            // Check if browser supports getUserMedia
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch(function(err) {
+                        console.log("Error accessing camera: " + err);
+                        alert("Unable to access camera. Please ensure camera permissions are granted.");
+                    });
+            }
+
+            // Capture photo
+            captureBtn.addEventListener('click', function() {
+                // Draw the current video frame on canvas
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Convert canvas to data URL (base64 encoded image)
+                const imageDataUrl = canvas.toDataURL('image/jpeg');
+
+                // Show preview, hide video
+                preview.src = imageDataUrl;
+                preview.style.display = 'block';
+                video.style.display = 'none';
+
+                // Set hidden input value for form submission
+                capturedPhotoInput.value = imageDataUrl;
+
+                // Toggle button visibility
+                captureBtn.style.display = 'none';
+                retakeBtn.style.display = 'block';
+            });
+
+            // Retake photo
+            retakeBtn.addEventListener('click', function() {
+                // Hide preview, show video again
+                preview.style.display = 'none';
+                video.style.display = 'block';
+
+                // Clear hidden input
+                capturedPhotoInput.value = '';
+
+                // Toggle button visibility
+                captureBtn.style.display = 'block';
+                retakeBtn.style.display = 'none';
+            });
+        });
+        
         document.getElementById('identitas').addEventListener('change', function() {
             var darimanaInput = document.getElementById('darimana');
             if (this.value === 'orang_tua_siswa') {
