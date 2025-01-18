@@ -22,8 +22,6 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-
-
         .header {
             margin-bottom: 20px;
             text-align: center;
@@ -52,7 +50,6 @@
             margin: 0;
         }
 
-
         .content {
             padding: 20px;
             margin-bottom: 20px;
@@ -78,9 +75,9 @@
         }
 
         .signature .right-signature {
-            text-align: left; /* Menggeser tanda tangan ke kiri */
+            text-align: left;
             float: right;
-            margin-right: 30px; /* Menggeser ke kiri sedikit lagi */
+            margin-right: 30px;
         }
 
         .footer {
@@ -97,7 +94,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="logo_pi.png" alt="Logo">
+            <img src="pi_blue.png" alt="Logo">
             <div class="header-text">
                 <h1>Yayasan Pendidikan Teknologi Prakarya Internasional 1952</h1>
                 <p>SMK PRAKARYA INTERNASIONAL [SMK PI]</p>
@@ -126,16 +123,14 @@
                         @endif
                     </div>
                 </div>
-                <div style="width: 50%; float: right;">
-                    <p>Tujuan: {{ $tamu->kemana }}</p>
-                    <p>Keperluan: {{ $tamu->keperluan }}</p>
-                    <p>Hari & Tanggal: {{ strftime('%A, %d/%m/%Y %H:%M', strtotime($tamu->created_at)) }}</p>
+                    <div style="width: 50%; float: right;">
+                        <p>Tujuan: {{ $tamu->kemana }}</p>
+                        <p>Keperluan: {{ $tamu->keperluan }}</p>
+                        <p>Hari & Tanggal: {{ strftime('%A, %d/%m/%Y %H:%M', strtotime($tamu->created_at)) }}</p>
+                    </div>
+                    <div style="clear: both;"></div>
                 </div>
-                <div style="clear: both;"></div>
-            </div>
-
-{{--
-            <div class="signature">
+            <!-- <div class="signature">
                 <div class="left-signature">
                     <p>Penanggung Jawab</p>
                     <p>(___________)</p>
@@ -145,13 +140,10 @@
                     <p>(___________)</p>
                 </div>
                 <div style="clear: both;"></div>
-            </div> --}}
-
+            </div>  -->
             <p style="text-align: right;  margin-right: 30px;
             ">Bandung, {{ $tamu->created_at->format('d/m/Y') }}</p>
         </div>
-
-
     </div>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Menarik</title>
+    <title>Web Sekolah</title>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -156,14 +156,14 @@
 </head>
 
 <body style="background-image: url({{ asset('lol.jpg') }}); background-size:cover;">
-    <div class="shape bubble" style="top: 10%; left: 10%; width: 60px; height: 60px; background-color: #6c5ce7;"></div>
+    <!-- <div class="shape bubble" style="top: 10%; left: 10%; width: 60px; height: 60px; background-color: #6c5ce7;"></div>
     <div class="block shape" style="top: 20%; left: 40%; width: 40px; height: 40px; background-color: #6c5ce7;"></div>
     <div class="shape bubble" style="top: 30%; left: 70%; width: 80px; height: 80px; background-color: #6c5ce7;"></div>
     <div class="block shape" style="top: 50%; left: 20%; width: 50px; height: 50px; background-color: #6c5ce7;"></div>
     <div class="shape bubble" style="top: 60%; left: 50%; width: 30px; height: 30px; background-color: #6c5ce7;"></div>
-    <div class="block shape" style="top: 80%; left: 80%; width: 70px; height: 70px; background-color: #6c5ce7;"></div>
+    <div class="block shape" style="top: 80%; left: 80%; width: 70px; height: 70px; background-color: #6c5ce7;"></div> -->
     <div class="logo-container">
-    <img src="pi_blue.png" alt="Logo" class="mx-auto" style="width: 170px; height: auto;">
+    <img src="pi_blue.png" alt="Logo" class="mx-auto" style="width: 170px; height: auto; margin-bottom:50px">
     </div>
 
     <div class="container">
@@ -318,6 +318,11 @@
                     <div class="form-group">
                         <label for="nama">Nama</label>
                         <input type="text" name="nama" class="form-control" id="nama" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_telp">No Telepon</label>
+                        <input type="number" name="no_telp" class="form-control" id="no_telp" required>
                     </div>
 
                     <div class="form-group">

@@ -97,7 +97,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="logo_pi.png" alt="Logo">
+            <img src="pi_blue.png" alt="Logo">
             <div class="header-text">
                 <h1>Yayasan Pendidikan Teknologi Prakarya Internasional 1952</h1>
                 <p>SMK PRAKARYA INTERNASIONAL [SMK PI]</p>
