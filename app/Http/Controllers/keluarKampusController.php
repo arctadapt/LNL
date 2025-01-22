@@ -96,12 +96,13 @@ class keluarKampusController extends Controller
     public function storeSuratTamu(Request $request)
     {
         $validatedData = $request->validate([
-            'identitas' => 'nullable|string|max:255',
+            'identitas' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
-            'darimana' => 'nullable|string|max:255',
+            'darimana' => 'required|string|max:255',
             'kemana' => 'required|string|max:255',
             'keperluan' => 'required|string|max:255',
-            'captured_photo' => 'nullable|string'
+            'captured_photo' => 'nullable|string',
+            'no_telp' => 'nullable|string|max:20'
         ]);
     
         // Simpan data tamu ke database
@@ -110,14 +111,13 @@ class keluarKampusController extends Controller
         // Proses foto yang di-capture
         $photoData = null;
         if ($request->has('captured_photo') && $request->captured_photo) {
-            // Dekode base64 image
             $imageData = $request->captured_photo;
-            
+    
             // Pisahkan base64 header jika ada
             if (strpos($imageData, 'base64,') !== false) {
                 list($type, $imageData) = explode('base64,', $imageData);
             }
-            
+    
             // Decode base64 image
             $photoData = base64_decode($imageData);
         }
@@ -125,7 +125,7 @@ class keluarKampusController extends Controller
         // Generate PDF dengan foto yang sudah di-decode
         $pdf = PDF::loadView('pdf.surat_tamu', [
             'tamu' => $tamu, 
-            'photoData' => $photoData ? 'data:image/jpeg;base64,'.base64_encode($photoData) : null
+            'photoData' => $photoData ? 'data:image/jpeg;base64,' . base64_encode($photoData) : null
         ]);
     
         $filename = 'surat_tamu_' . $tamu->id . '.pdf';
@@ -150,7 +150,7 @@ class keluarKampusController extends Controller
         // Redirect ke halaman untuk melihat PDF
         return redirect()->route('showPdf', ['filename' => $filename])
                          ->with('success', 'Data tamu berhasil disimpan dan email terkirim.');
-    }
+    }    
 
     private function getEmailByDestination($destination)
     {
